@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 import { AppProvider } from '~/context';
-import { Example, Test } from '~/modules';
+import { PurchaseCart } from '~/modules';
+import { User } from '~/modules/User';
 import { GlobalStyles } from '~/theme/global';
 
 function App() {
@@ -9,9 +10,10 @@ function App() {
       <ThemeProvider theme={{}}>
         <GlobalStyles />
 
-        <Example />
+        <User />
         <hr />
-        <Test />
+
+        <PurchaseCart />
       </ThemeProvider>
     </AppProvider>
   );

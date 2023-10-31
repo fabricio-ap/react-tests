@@ -1,20 +1,20 @@
 import React, { Dispatch, createContext, useReducer } from 'react';
 import { Actions, mainReducer } from '~/reducer';
-import { ProductType } from '~/reducer/products';
-import { StoreType } from '~/reducer/store';
+import { PurchaseCartItemType } from '~/reducer/purchaseCart';
+import { UserType } from '~/reducer/user';
 
 interface AppProviderProps {
   children: React.ReactNode;
 }
 
 export type InitialStateType = {
-  products: ProductType[];
-  store: StoreType[];
+  user: UserType;
+  purchaseCart: PurchaseCartItemType[];
 };
 
 const initialState = {
-  products: [],
-  store: [],
+  user: { name: 'a' },
+  purchaseCart: [],
 };
 
 const AppContext = createContext<{

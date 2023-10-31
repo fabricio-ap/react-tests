@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
+import { addProduct } from '~/actions/purchaseCart';
 import { AppContext } from '~/context';
+import { PurchaseCartItemType } from '~/reducer/purchaseCart';
 
 type ProductType = {
   id: number;
@@ -11,12 +13,10 @@ type ProductType = {
   image: string;
 };
 
-export function Test() {
+export function PurchaseCart() {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   const { state, dispatch } = useContext(AppContext);
-
-  console.log({ state });
 
   useEffect(() => {
     fetchProducts();
@@ -28,6 +28,10 @@ export function Test() {
     if (data) setProducts(data);
   };
 
+  const handleAddProducts = (item: PurchaseCartItemType) => {
+    dispatch(addProduct(item));
+  };
+
   return (
     <div>
       <h4>Test</h4>
@@ -36,13 +40,23 @@ export function Test() {
         {products.length ? (
           products.map((product) => (
             <li key={product.id}>
-              {product.title} <button onClick={() => null}>add</button>
+              {product.title} <button onClick={() => handleAddProducts(product)}>add</button>
             </li>
           ))
         ) : (
           <></>
         )}
       </ul>
+
+      <hr />
+
+      <div>
+        {state.purchaseCart.length ? (
+          state.purchaseCart.map((item) => <div>{item.title}</div>)
+        ) : (
+          <div>Nenhum item adicionado ao carrinho</div>
+        )}
+      </div>
     </div>
   );
 }
