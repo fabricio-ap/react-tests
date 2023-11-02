@@ -15,6 +15,9 @@ export const purchaseCartReducer = (state: PurchaseCartItemType[], action: Purch
     case Types.ADD_CART:
       return [...state, action.payload];
 
+    case Types.REMOVE_CART:
+      return [...state.filter((item) => action.payload.id !== item.id)];
+
     default:
       return state;
   }

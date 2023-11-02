@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { addProduct } from '~/actions/purchaseCart';
+import { addProduct, removeProduct } from '~/actions/purchaseCart';
+import { List, ListItemType } from '~/components';
 import { AppContext } from '~/context';
 import { PurchaseCartItemType } from '~/reducer/purchaseCart';
+import { Wrapper } from './styles';
 
 type ProductType = {
   id: number;
@@ -16,7 +18,10 @@ type ProductType = {
 export function PurchaseCart() {
   const [products, setProducts] = useState<ProductType[]>([]);
 
-  const { state, dispatch } = useContext(AppContext);
+  const {
+    state: { purchaseCart },
+    dispatch,
+  } = useContext(AppContext);
 
   useEffect(() => {
     fetchProducts();
@@ -32,31 +37,39 @@ export function PurchaseCart() {
     dispatch(addProduct(item));
   };
 
-  return (
+  const handleRemoveProducts = (item: PurchaseCartItemType) => {
+    dispatch(removeProduct(item));
+  };
+
+  const renderItem = (item: PurchaseCartItemType, type: 'ADD' | 'REMOVE') => (
     <div>
-      <h4>Test</h4>
+      <span>{item.title}</span>
 
-      <ul>
-        {products.length ? (
-          products.map((product) => (
-            <li key={product.id}>
-              {product.title} <button onClick={() => handleAddProducts(product)}>add</button>
-            </li>
-          ))
-        ) : (
-          <></>
-        )}
-      </ul>
-
-      <hr />
-
-      <div>
-        {state.purchaseCart.length ? (
-          state.purchaseCart.map((item) => <div>{item.title}</div>)
-        ) : (
-          <div>Nenhum item adicionado ao carrinho</div>
-        )}
-      </div>
+      {type === 'ADD' && <button onClick={() => handleAddProducts(item)}>+</button>}
+      {type === 'REMOVE' && <button onClick={() => handleRemoveProducts(item)}>-</button>}
     </div>
+  );
+
+  return (
+    <>
+      <h4>Lista de Produtos</h4>
+
+      <Wrapper>
+        <List
+          items={products}
+          render={(item: ListItemType) => renderItem(item as PurchaseCartItemType, 'ADD')}
+        />
+        <hr />
+
+        {purchaseCart.length ? (
+          <List
+            items={purchaseCart}
+            render={(item: ListItemType) => renderItem(item as PurchaseCartItemType, 'REMOVE')}
+          />
+        ) : (
+          <div>Nenhum item adicionado</div>
+        )}
+      </Wrapper>
+    </>
   );
 }

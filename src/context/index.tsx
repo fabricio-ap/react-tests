@@ -13,7 +13,7 @@ export type InitialStateType = {
 };
 
 const initialState = {
-  user: { name: 'a' },
+  user: { name: '' },
   purchaseCart: [],
 };
 

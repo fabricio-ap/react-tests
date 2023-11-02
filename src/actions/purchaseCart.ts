@@ -2,6 +2,7 @@ import { PurchaseCartItemType } from '~/reducer/purchaseCart';
 
 export enum Types {
   ADD_CART = 'ADD_CART',
+  REMOVE_CART = 'REMOVE_CART',
 }
 
 export type PurchaseCartPayload = {
@@ -13,11 +14,17 @@ export type PurchaseCartPayload = {
     description: string;
     image: string;
   };
-};
-
-export const addProduct = (payload: PurchaseCartItemType) => {
-  return {
-    type: Types.ADD_CART,
-    payload,
+  [Types.REMOVE_CART]: {
+    id: number;
   };
 };
+
+export const addProduct = (payload: PurchaseCartItemType) => ({
+  type: Types.ADD_CART,
+  payload,
+});
+
+export const removeProduct = (payload: PurchaseCartItemType) => ({
+  type: Types.REMOVE_CART,
+  payload,
+});
